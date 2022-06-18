@@ -1,0 +1,37 @@
+﻿@{
+
+    Layout = null;
+}
+
+<html>
+<head>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <title>Teacher Login</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            @using (Html.BeginForm("TeacherLogin", "Home", FormMethod.Post))//mvcRazor 1.Sayfa İsmi 2.Controler İsmi 3.Method Tipi
+            {
+                <div class="col-md-offset-4">
+                    <div class="form-group">
+                        <label>Kullanıcı Adı</label>
+                        <input class="form-control" name="kullaniciAdi" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label>Şifre</label>
+                        <input type="password" class="form-control" name="sifre" placeholder="Enter password">
+                    </div>
+                    <button class="btn btn-warning">Giriş Yap</button>
+                    <a class="btn btn-danger" href="/Home/Index">Geri Dön</a>
+                </div>
+            }
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+﻿@using MVCARIBILGI.Models
+@model DersProgramiDTO
+@{
+    ViewBag.Title = "RollCall";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h3 class="text-center">Ders Programınız</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sınıf Adı</th>
+                    <th>Ders Adı</th>
+                    <th>Ders Tarihi</th>
+                    <th>Ders Başlangıç</th>
+                    <th>Ders Bitişi</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.dersProgramis)
+                {
+
+
+                    <tr>
+                        <td>@item.SinifID.Name</td>
+                        <td>@item.Adi</td>
+                        <td>@item.Tarih.ToString("dd-MM-yyyy")</td>
+                        <td>@item.Baslangic.ToString("HH:mm")</td>
+                        <td>@item.Bitis.ToString("HH:mm")</td>
+                        @*<td>@item.SinifID.Id</td>*@
+                        <td>
+                            @if (DateTime.Now.ToString("dd-MM-yyyy") == item.Tarih.ToString("dd-MM-yyyy"))
+                            {
+                                <a onclick="OgrenciListesiGetir('@item.SinifID.Id', '@item.Id')" class="btn btn-info">Seç</a>
+                            }
+                            else
+                            {
+                                <a href="#" class="btn btn-info" disabled>Seç</a>
+                            }
+                        </td>
+
+                    </tr>
+                }
+
+            </thead>
+
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h3 class="text-center">Yoklama Listesi</h3>
+        <div id="tGizle" class="hidden">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Öğrenci Id</th>
+                        <th>Öğrenci Adı Soyadı</th>
+                        <th>Öğrenci  No</th>
+                    </tr>
+                </thead>
+                <tbody id="tOgrenciListesi">
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function OgrenciListesiGetir(sinifId) {
+        $("#tGizle").removeClass("hidden");
+        Ajax("/Dashboard/GetListByID", "{SinifId:" + sinifId + "}", false, 'tOgrenciListesi');
+    }
+
+</script>

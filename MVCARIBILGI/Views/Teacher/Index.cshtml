@@ -1,0 +1,86 @@
+﻿@using MVCARIBILGI.Models
+@model EgitmenDTO
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-8">
+    <table class="table table-responsive">
+        <tr>
+            <th>#</th>
+            <th>Ad Soyad</th>
+            <th>Fotograf</th>
+            <th>Sınıf Kodu</th>
+            <th>Sınıf Adı</th>
+            <th></th>
+            <th><button class="btn btn-success" id="btnEkleme" onclick="EklemeMenusuGoster()" title="Yeni Egitmen Ekle">+</button></th>
+        </tr>
+        @foreach (var item in Model.Egitmenler)
+        {
+            <tr>
+                <th>@item.EgitmenID</th>
+                <td>@item.EgitmenAdSoyad</td>
+                <td><img src=" @item.EgitmenFoto" height="60" width="60" /></td>
+                <td>@item.EgitmenBrans.Kodu</td>
+                <td>@item.EgitmenBrans.Name</td>
+                <td><a href="/EgitmenProfile/Index?Id=@item.EgitmenID" class="btn btn-sm btn bg-primary"><i class="fa fa-address-book"></i></a></td>
+                <td><a href="#" class="btn btn-danger" onclick="EgitmenSil('@item.EgitmenID')"><i class="fa fa-trash"></i></a></td>
+            </tr>
+        }
+        @using (Html.BeginForm("EgitmenEkle", "Teacher", FormMethod.Post))
+        {
+            <tr id="eklemeMenusu" class="hidden">
+                <td></td>
+                <td><input class="form-control" name="EgitmenAdi" /></td>
+                <td><input class="form-control" name="EgitmenFoto" placeholder="Url Şeklinde Giriniz" /></td>
+                <td><label class="form-label">Sınıf Kodu</label></td>
+                <td>
+                    <select name="sinifId" class="form-selected">
+                        <option value="0"></option>
+                        @foreach (var item in Model.Siniflar)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </td>
+                <td><button class="btn btn-success">Ekle</button></td>
+
+            </tr>
+        }
+    </table>
+</div>
+<script type="text/javascript">
+    function EklemeMenusuGoster() {
+        if ($("#eklemeMenusu").attr("class") == 'hidden') {
+            $("#eklemeMenusu").removeClass("hidden");
+            $("#btnEkleme").html("X");
+            $("#btnEkleme").removeClass("btn-success");
+            $("#btnEkleme").addClass("btn-danger");
+            $("#btnEkleme").attr("title", "Eklemeyi iptal");
+        }
+        else {
+            $("#eklemeMenusu").addClass("hidden");
+            $("#btnEkleme").html("+");
+            $("#btnEkleme").removeClass("btn-danger");
+            $("#btnEkleme").addClass("btn-success");
+            $("#btnEkleme").attr("title", "Yeni Sınıf Ekle");
+        }
+
+    }
+    function EgitmenSil(id) {
+        $.ajax({
+            url: '/Teacher/Delete',
+            dataType: 'json',
+            type: 'POST',
+            data: "{Id:" + id + "}",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+            },
+            complete: function () {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+

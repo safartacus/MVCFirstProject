@@ -1,0 +1,63 @@
+﻿@using MVCARIBILGI.Models
+@model List<Sinif>
+@{
+    ViewBag.Title = "Class";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Class</h2>
+<div class="col-md-12">
+    <table class="table table-bordered">
+        <tr>
+            <th>#</th>
+            <th>Sinif Adi</th>
+            <th>Sinif Kodu</th>
+            <th><button class="btn btn-success" id="btnEkleme" onclick="EklemeMenusuGoster()" title="Yeni Sınıf Ekle">+</button></th>
+
+        </tr>
+        @using (Html.BeginForm("ClassAdd", "Class", FormMethod.Post))
+        {
+            <tr id="eklemeMenusu" class="hidden">
+                <td></td>
+                <td><input class="form-control" name="SinifAdi" /></td>
+                <td><input class="form-control" name="SinifKodu" /></td>
+                <td><button class="btn btn-primary">Kaydet</button></td>
+
+            </tr>
+        }
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Kodu</td>
+                <td><a href="#" onclick="SinifSil('@item.Id')" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
+                <td><a href="/Profile/SinifProfile/@item.Id" class="btn btn-sm btn bg-primary"><i class="fa fa-address-book"></i></a></td>
+            </tr>
+        }
+    </table>
+</div>
+<script type="text/javascript">
+    function EklemeMenusuGoster() {
+        if ($("#eklemeMenusu").attr("class") == 'hidden') {
+            $("#eklemeMenusu").removeClass("hidden");
+            $("#btnEkleme").html("X");
+            $("#btnEkleme").removeClass("btn-success");
+            $("#btnEkleme").addClass("btn-danger");
+            $("#btnEkleme").attr("title", "Eklemeyi iptal");
+        }
+        else {
+            $("#eklemeMenusu").addClass("hidden");
+            $("#btnEkleme").html("+");
+            $("#btnEkleme").removeClass("btn-danger");
+            $("#btnEkleme").addClass("btn-success");
+            $("#btnEkleme").attr("title", "Yeni Sınıf Ekle");
+        }
+
+    }
+    
+    function SinifSil(id) {
+        Ajax("/Class/Delete", "{Id:" + id + "}", true)
+        
+    }
+</script>

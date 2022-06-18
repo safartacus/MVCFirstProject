@@ -1,0 +1,105 @@
+﻿@using MVCARIBILGI.Models
+@model OgrenciDTO
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Class</h2>
+<div class="col-md-8">
+    <table class="table table-responsive">
+        <tr>
+            <th>#</th>
+            <th>Öğrenci Adı Soyadı</th>
+            <th>Öğrenci No</th>
+            <th>Sınıf Kodu</th>
+            <th>Sınıf Adı</th>
+            <th></th>
+            <th><button class="btn btn-success" id="btnEkleme" onclick="EklemeMenusuGoster()" title="Yeni Sınıf Ekle">+</button></th>
+
+        </tr>
+        @using (Html.BeginForm("OgrenciAdd", "Student", FormMethod.Post))
+        {
+
+
+            <tr id="eklemeMenusu" class="hidden">
+                <td></td>
+                <td><input class="form-control" name="OgrenciAdi" /></td>
+                <td><input class="form-control" name="OgrenciNo" /></td>
+                <td>
+                    <label class="form-label">Sınıf Kodu</label>
+                </td>
+                <td>
+                    <select name="sinifId" class="form-selected">
+                        <option value="0"></option>
+                        @foreach (Sinif _sinif in Model.Siniflar)
+                        {
+                            <option value="@_sinif.Id">@_sinif.Name</option>
+                        }
+                    </select>
+
+                </td>
+                <td><button class="btn btn-primary">Ekle</button></td>
+
+            </tr>
+        }
+
+        @foreach (Ogrenci ogrenci in Model.Ogrenciler)
+        {
+            <tr>
+                <td>@ogrenci.OgrenciId</td>
+                <td>@ogrenci.OgrenciName</td>
+                <td>@ogrenci.OgrenciNo</td>
+                <td>@ogrenci._Sınıf.Kodu</td>
+                <td>@ogrenci._Sınıf.Name</td>
+                <td><a href="/Profile/Index?Id=@ogrenci.OgrenciId" class="btn btn-sm btn bg-primary"><i class="fa fa-address-book"></i></a></td>
+                <td><a href="#" class="btn btn-danger" onclick="KullaniciSil('@ogrenci.OgrenciId')"><i class="fa fa-trash"></i></a></td>
+
+
+            </tr>
+        }
+
+    </table>
+</div>
+<div class="col-md-4">
+    Toplam Öğrenci Sayısı = @Model.Ogrenciler.Count
+    <br />
+    Toplam Atanmış Öğrenci = @Model.Ogrenciler.Where(x => x._Sınıf.Name != "").Count()
+    <br />
+    Toplam Atanmamış Öğrenci = @Model.Ogrenciler.Where(x=>x._Sınıf.Name =="").Count()
+</div>
+<script type="text/javascript">
+    function EklemeMenusuGoster() {
+        if ($("#eklemeMenusu").attr("class") == 'hidden') {
+            $("#eklemeMenusu").removeClass("hidden");
+            $("#btnEkleme").html("X");
+            $("#btnEkleme").removeClass("btn-success");
+            $("#btnEkleme").addClass("btn-danger");
+            $("#btnEkleme").attr("title", "Eklemeyi iptal");
+        }
+        else {
+            $("#eklemeMenusu").addClass("hidden");
+            $("#btnEkleme").html("+");
+            $("#btnEkleme").removeClass("btn-danger");
+            $("#btnEkleme").addClass("btn-success");
+            $("#btnEkleme").attr("title", "Yeni Sınıf Ekle");
+        }
+        
+    }
+    function KullaniciSil(id) {
+        $.ajax({
+            url: '/Student/Delete',
+            dataType: 'json',
+            type: 'POST',
+            data: "{Id:" + id + "}",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+            },
+            complete: function () {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+

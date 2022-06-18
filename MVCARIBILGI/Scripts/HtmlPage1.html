@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <script type="text/javascript">
+        function faturaHesapla() {
+            //*******************inputlardan gelen degerleri okuma*********************
+            var Birim = document.getElementById("Birim").value;
+            var kdv = document.getElementById("kdv").value;
+            var iskt1 = document.getElementById("iskt1").value;
+            var iskt2 = document.getElementById("iskt2").value;
+            var Miktar = document.getElementById("Miktar").value;
+            var Kar = document.getElementById("Kar").value;
+            //*************************************************************************
+
+            //**********************Matamatiksel islemler******************************
+            var Hesap1 = Birim + (Birim * (kdv / 100));
+            var Hesap2 = Hesap1 - (Hesap1 * (iskt1 / 100));
+            var Hesap3 = Hesap2 - (Hesap2 * (iskt2 / 100));
+            var Hesap4 = Hesap3 + (Hesap3 * (Kar / 100));
+            var Hesap5 = Hesap3 * Miktar;
+            //*************************************************************************
+
+            document.getElementById("Alis").value = Hesap3;
+            document.getElementById("Satis").value = Hesap4;
+            document.getElementById("TplAlis").value = Hesap3 * Miktar;
+            document.getElementById("TplSatis").value = Hesap5;
+        }
+    </script>
+
+
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr><td>Birim Fiyati</td><td>:</td><td><input type="text" name="Birim" id="Birim" /></td></tr>
+        <tr><td>Miktar</td><td>:</td><td><input type="text" name="Miktar" id="Miktar" /></td></tr>
+        <tr><td>K.D.V</td><td>:</td><td><input type="text" name="kdv" id="kdv" /></td></tr>
+        <tr><td>iskonto 1</td><td>:</td><td><input type="text" name="iskt1" id="iskt1" /></td></tr>
+        <tr><td>iskonto 2</td><td>:</td><td><input type="text" name="iskt2" id="iskt2" /></td></tr>
+        <tr><td>Kar Marjı</td><td>:</td><td><input type="text" name="Kar" id="Kar" /></td></tr>
+        <tr><td>Alis Fiyati</td><td>:</td><td><input type="text" name="Alis" id="Alis" /></td></tr>
+        <tr><td>Satis Fiyati</td><td>:</td><td><input type="text" name="Satis" id="Satis" /></td></tr>
+        <tr><td>Toplam Alis</td><td>:</td><td><input type="text" name="TplAlis" id="TplAlis" /></td></tr>
+        <tr><td>Toplam Satis</td><td>:</td><td><input type="text" name="TplSatis" id="TplSatis" /></td></tr>
+        <tr><td colspan="3" align="right"><input name="islem" type="button" value="Hesapla" onclick="faturaHesapla()" /></td></tr>
+    </table>
+</body>
+</html>

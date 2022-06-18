@@ -1,0 +1,63 @@
+﻿@using MVCARIBILGI.Models
+@model ProfileDTO
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-md-12" style="margin-top:50px">
+    <div class="col-md-4">
+        <table class="table table-striped">
+
+            <tr>
+                <th>Ad Soyad</th>
+                <td>:</td>
+                <td>@Model._ogrenci.OgrenciName</td>
+            </tr>
+            <tr>
+                <th>Öğrenci No</th>
+                <td>:</td>
+                <td>@Model._ogrenci.OgrenciNo</td>
+            </tr>
+            <tr>
+                <th>Eğitim Sınıfı</th>
+                <td>:</td>
+                <td>@Model._ogrenci._Sınıf.Name  <i onclick="DuzenleMenusuGoster()" class="fa fa-pencil-square-o"></i></td>
+
+            </tr>
+            <tr class="hidden"id="duzenleMenusu">
+                <th>Yeni Sınıf Seçiniz</th>
+                <td>:</td>
+                <td>
+                    @using (Html.BeginForm("Edit", "Profile", FormMethod.Post))
+                    {
+                        <input name="Id" value="@Convert.ToInt32( Request.QueryString["Id"])" class="hidden"/>
+                        <select name="sinifId" class="form-selected">
+                            <option value="0" selected></option>
+                            @foreach (Sinif _sinif in Model._sinif)
+                            {
+                                <option value="@_sinif.Id"> @_sinif.Name</option>
+                            }
+                        </select>
+                        <br /><br />
+                        <button class="btn btn-success">Kaydet</button>
+                    }
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function DuzenleMenusuGoster() {
+        if ($("#duzenleMenusu").attr("class") == 'hidden') {
+            $("#duzenleMenusu").removeClass("hidden");
+        }
+        else {
+            $("#duzenleMenusu").addClass("hidden");
+        }
+        
+    }
+
+</script>
+

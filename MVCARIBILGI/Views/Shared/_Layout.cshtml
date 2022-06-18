@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoklama Sistemi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand">Yoklama Sistemi</a>
+
+            </div>
+            @if (Session["Yetki"] != null && Session["Yetki"].ToString() == "Yonetici")
+            {
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/Dashboard/Index">Ana Sayfa</a></li>
+                        <li><a href="/Class/Index">Sınıflar</a></li>
+                        <li><a href="/Student/Index">Öğrenciler</a></li>
+                        <li><a href="/Teacher/Index">Eğitmenler</a></li>
+
+
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    <div class="container body-content">
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Yoklama Sistemi V 1.00</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+
+        function Ajax(_url,_data,IsRefresh,_tableName)
+        {
+        
+            $.ajax({
+                url: _url,
+                dataType: 'json',
+                type: 'POST',
+                data: _data,
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    var content = "";
+                    if (_tableName != "") {
+                        $.each(data, function () {
+                            content += "<tr>";
+                            content += "<td>" + this["OgrenciId"] + "</td>";
+                            content += "<td>" + this["OgrenciName"] + "</td>";
+                            content += "<td>" + this["OgrenciNo"] + "</td>";
+                            content += "</tr>";
+
+                        });
+                        $("#" + _tableName).html(content);
+                    }
+                    
+                },
+                complete: function ()
+                {
+                    if (IsRefresh) {
+                        window.location.reload();
+                    }
+                }
+
+
+            });
+        }
+    </script>
+</body>
+</html>

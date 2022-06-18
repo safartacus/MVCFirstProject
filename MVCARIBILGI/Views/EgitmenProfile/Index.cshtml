@@ -1,0 +1,66 @@
+﻿@using MVCARIBILGI.Models
+@model ProfileDTO
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile Card</title>
+    <link rel="stylesheet" type="text/css" href="~/Profile-Card-Design-master/style.css">
+</head>
+
+<body>
+
+    <div class="card-container">
+
+        <div class="upper-container">
+            <div class="image-container">
+                <img src="@Model._egitmen.EgitmenFoto" />
+            </div>
+        </div>
+
+        <div class="lower-container">
+            <div>
+                <h3>@Model._egitmen.EgitmenAdSoyad</h3>
+                <br />
+                <h4>@Model._egitmen.EgitmenBrans.Name</h4>
+                
+                <button class="btn btn-primary" onclick="DuzenleMenusuGoster()">Düzenle</button>
+                
+            </div>
+            <div class="hidden" id="duzenleMenusu">
+                @using (Html.BeginForm("EditTeacher", "EgitmenProfile", FormMethod.Post))
+                {
+                    <br />
+                    <input name="EgitmenID" value="@Convert.ToInt32( Request.QueryString["Id"])" class="hidden" />
+                    <select name="sinifId" class="form-selected">
+                        <option value="0" selected></option>
+                        @foreach (Sinif _sinif in Model._sinif)
+                        {
+                            <option value="@_sinif.Id"> @_sinif.Name</option>
+                        }
+                    </select>
+                    <br /><br />
+                    <button class="btn btn-success">Kaydet</button>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        function DuzenleMenusuGoster() {
+            if ($("#duzenleMenusu").attr("class") == 'hidden') {
+                $("#duzenleMenusu").removeClass("hidden");
+            }
+            else {
+                $("#duzenleMenusu").addClass("hidden");
+            }
+
+        }
+
+    </script>
+</body>
+</html>
